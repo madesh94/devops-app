@@ -4,7 +4,7 @@ class MyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
         self.end_headers()
-        self.wfile.write(b"Hello from my DevOps application!")
+        self.wfile.write(b"Hello from my DevOps application - Version 2!")
 
 server = HTTPServer(("0.0.0.0", 8080), MyHandler)
 
