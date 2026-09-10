@@ -1,4 +1,5 @@
 import unittest
+import os
 from http.client import HTTPConnection
 import subprocess
 import time
@@ -8,7 +9,7 @@ class TestApplication(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.process = subprocess.Popen(["python3", "app.py"])
+        cls.process = subprocess.Popen(["python3", "app.py"], env={**os.environ, "PORT": "8090"})
         time.sleep(2)
 
     @classmethod
@@ -17,7 +18,7 @@ class TestApplication(unittest.TestCase):
         cls.process.wait()
 
     def test_health_check(self):
-        connection = HTTPConnection("localhost", 8080)
+        connection = HTTPConnection("localhost", 8090)
         connection.request("GET", "/")
         response = connection.getresponse()
 

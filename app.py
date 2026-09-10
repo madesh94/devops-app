@@ -1,4 +1,6 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
+import os
+
 
 class MyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -6,8 +8,9 @@ class MyHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(b"Hello from my DevOps application - Health check feature!")
 
-server = HTTPServer(("0.0.0.0", 8080), MyHandler)
+port = int(os.environ.get("PORT", "8080"))
+server = HTTPServer(("0.0.0.0", port), MyHandler)
 
-print("Application running on port 8080...")
+print(f"Application running on port {port}...")
 
 server.serve_forever()
