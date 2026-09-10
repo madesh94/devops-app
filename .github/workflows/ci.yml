@@ -1,10 +1,11 @@
-- name: DevOps CI
+name: DevOps CI
 
 on:
   push:
     branches:
       - main
       - feature/health-check
+
   pull_request:
     branches:
       - main
