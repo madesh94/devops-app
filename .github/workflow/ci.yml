@@ -1,0 +1,32 @@
+name: DevOps CI
+
+on:
+  push:
+    branches:
+      - main
+      - feature/health-check
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Check Python syntax
+        run: python -m py_compile app/app.py
+
+      - name: Test application
+        run: |
+          python app/app.py &
+          sleep 2
+          curl http://localhost:8080
