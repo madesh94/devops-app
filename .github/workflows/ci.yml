@@ -30,4 +30,7 @@ jobs:
         run: python -m unittest tests/test_app.py
 
       - name: Deploy application
-        run: sudo systemctl restart devops-app 
+        if: github.ref == 'refs/heads/main'
+        run: |
+          cp "$GITHUB_WORKSPACE/app.py" /home/ubuntuadmin/devops-lab/app/app.py
+          sudo systemctl restart devops-app 
