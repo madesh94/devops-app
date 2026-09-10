@@ -23,10 +23,10 @@ jobs:
           python-version: '3.10'
 
       - name: Check Python syntax
-        run: python -m py_compile app/app.py
+        run: python -m py_compile app.py
 
       - name: Test application
         run: |
-          python app/app.py &
+          python app.py &
           sleep 2
           curl http://localhost:8080
