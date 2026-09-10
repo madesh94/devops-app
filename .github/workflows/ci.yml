@@ -28,3 +28,6 @@ jobs:
 
       - name: Run tests
         run: python -m unittest tests/test_app.py
+
+      - name: Deploy application
+        run: sudo systemctl restart devops-app 
