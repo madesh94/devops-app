@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+      context: .
+    container_name: compose-app
+    environment:
+      PORT: ${PORT}
+    ports:
+      - "8082:8090"
+
