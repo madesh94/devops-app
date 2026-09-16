@@ -12,7 +12,7 @@ on:
 
 jobs:
   test:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -28,9 +28,3 @@ jobs:
 
       - name: Run tests
         run: python -m unittest tests/test_app.py
-
-      - name: Deploy application
-        if: github.ref == 'refs/heads/main'
-        run: |
-          cp "$GITHUB_WORKSPACE/app.py" /home/ubuntuadmin/devops-lab/app/app.py
-          sudo systemctl restart devops-app 
