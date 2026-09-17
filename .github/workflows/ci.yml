@@ -31,3 +31,9 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t devops-app:test .
+
+      - name: Run Docker container
+        run: docker run -d -p 8082:8080 --name devops-app-test devops-app:test
+
+      - name: Test Docker container
+        run: curl http://localhost:8082
