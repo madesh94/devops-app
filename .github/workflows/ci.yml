@@ -41,4 +41,11 @@ jobs:
           docker logs devops-app-test
 
       - name: Test Docker container
-        run: curl http://localhost:8082
+        run: |
+          for i in {1..10}; do
+            if curl -s http://localhost:8082; then
+              exit 0
+            fi
+            sleep 1
+         done
+         exit 1
