@@ -35,11 +35,6 @@ jobs:
       - name: Run Docker container
         run: docker run -d -p 8082:8080 --name devops-app-test devops-app:test
 
-      - name: Check Docker container
-        run: |
-          docker ps
-          docker logs devops-app-test
-
       - name: Test Docker container
         run: |
           for i in {1..10}; do
