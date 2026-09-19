@@ -6,7 +6,7 @@ class MyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
         self.end_headers()
-        self.wfile.write(b"Hello from my New DevOps application - Health check feature!")
+        self.wfile.write(b"Hello from my DevOps Version 2 CD - Deployment application - Health check feature!")
 
 port = int(os.environ.get("PORT", "8080"))
 server = HTTPServer(("0.0.0.0", port), MyHandler)
