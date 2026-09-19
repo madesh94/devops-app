@@ -12,6 +12,10 @@ on:
 
 jobs:
   test:
+    permissions:
+      contents: read
+      packages: write
+
     runs-on: ubuntu-latest
 
     steps:
@@ -44,3 +48,9 @@ jobs:
             sleep 1
           done
           exit 1
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+      - name: Tag Docker image
+        run: docker tag devops-app:test ghcr.io/${{ github.repository }}:${{ github.sha }}
+      - name: Push Docker image
+        run: docker push ghcr.io/${{ github.repository }}:${{ github.sha }}
