@@ -54,7 +54,7 @@ jobs:
         run: docker tag devops-app:test ghcr.io/${{ github.repository }}:${{ github.sha }}
       - name: Push Docker image
         run: docker push ghcr.io/${{ github.repository }}:${{ github.sha }}
- deploy:
+  deploy:
     needs: test
     runs-on: self-hosted
 
