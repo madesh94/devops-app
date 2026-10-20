@@ -4,7 +4,11 @@ CONTAINER="devops-app-production"
 OLD_IMAGE=$(docker inspect --format='{{.Config.Image}}' "$CONTAINER" 2>/dev/null || true)
 
 
-docker pull "$IMAGE"
+if ! docker pull "$IMAGE"; then
+    echo "ERROR: Unable to pull new Docker image."
+    echo "Existing production container will remain untouched."
+    exit 1
+fi
 
 docker stop "$CONTAINER" 2>/dev/null || true
 
