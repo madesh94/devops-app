@@ -10,6 +10,14 @@ on:
     branches:
       - main
 
+  workflow_dispatch:
+    inputs:
+      rollback_test:
+        description: 'Simulate deployment failure'
+        required: true
+        type: boolean
+        default: false
+
 jobs:
   test:
     permissions:
