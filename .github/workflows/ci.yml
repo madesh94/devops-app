@@ -9,6 +9,13 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      rollback_test:
+        description: 'Simulate deployment failure'
+        required: true
+        type: boolean
+        default: false
 
 jobs:
   test:
@@ -56,8 +63,18 @@ jobs:
         run: docker push ghcr.io/${{ github.repository }}:${{ github.sha }}
   deploy:
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: |
+      (github.event_name == 'push' &&
+       github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_dispatch' &&
+       github.ref == 'refs/heads/feature/rollback-test' &&
+       inputs.rollback_test == true)
     runs-on: self-hosted
+    concurrency:
+      group: devops-production
+      cancel-in-progress: false
+    env:
+      ROLLBACK_TEST: ${{ inputs.rollback_test == true && 'true' || 'false' }}
 
     steps:
       - name: Checkout code
