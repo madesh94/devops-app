@@ -1,0 +1,58 @@
+name: AWS Production Deployment
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aws-production-deployment
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, aws-ec2]
+
+    environment:
+      name: aws-production
+
+    timeout-minutes: 15
+
+    steps:
+      - name: Verify deployment configuration
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          echo "Runner: $RUNNER_NAME"
+          echo "Branch: $GITHUB_REF"
+
+          test "$GITHUB_REF" = "refs/heads/main"
+          test -f /home/ubuntu/devops-deployment/deploy-automated.sh
+
+          bash -n /home/ubuntu/devops-deployment/deploy-automated.sh
+
+          echo "Deployment configuration verified"
+
+      - name: Deploy approved Version 2 image
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          cd /home/ubuntu/devops-deployment
+
+          bash deploy-automated.sh \
+            ghcr.io/madesh94/devops-app:d6f9cdfdf9a52765123217884e2096db0b740e4b
+
+      - name: Verify production health
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          curl --fail --silent --show-error \
+            http://localhost:8083
+
+          echo
+          echo "AWS production deployment verified"
